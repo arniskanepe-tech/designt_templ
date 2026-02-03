@@ -1,2 +1,107 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Layout 8</title></head>
-<body><div data-layout-nav></div><h1>Layout 8</h1><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 8 — Deconstructed Growth</title>
+
+<style>
+/* ===== THEMES (only here) ===== */
+:root{
+  --bg:#f6f2ec;
+  --ink:#1c1916;
+  --accent:#b8743a;
+  --soft:#e8ddd2;
+}
+[data-theme="sand"]{--bg:#f6f2ec;--ink:#1c1916;--accent:#b8743a;}
+[data-theme="ink"]{--bg:#0f0f12;--ink:#f4f1ec;--accent:#d4a24a;}
+[data-theme="olive"]{--bg:#f1f3ef;--ink:#1b1d17;--accent:#6f7c55;}
+[data-theme="copper"]{--bg:#fbf2eb;--ink:#201511;--accent:#c0672f;}
+[data-theme="noir"]{--bg:#0b0b0c;--ink:#f2efe9;--accent:#999;}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--ink);
+}
+a{text-decoration:none;color:inherit}
+
+/* top */
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;z-index:10
+}
+.pill{
+  background:rgba(255,255,255,.65);
+  border-radius:14px;
+  padding:10px 12px;
+  backdrop-filter:blur(10px)
+}
+
+/* layout */
+.stage{
+  min-height:100vh;
+  padding:120px 18px 80px;
+  position:relative;
+}
+.bigtype{
+  font-size:clamp(48px,10vw,140px);
+  font-weight:900;
+  line-height:.9;
+  letter-spacing:-.05em;
+}
+.layer{
+  position:absolute;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.25)
+}
+.l1{top:120px;right:10%;width:340px;height:220px;background:url("assets/path.jpg") center/cover}
+.l2{top:380px;left:8%;width:260px;height:320px;background:url("assets/zen.jpg") center/cover}
+.l3{bottom:120px;right:18%;width:220px;height:220px;background:url("assets/stones.jpg") center/cover}
+
+.text{
+  max-width:520px;
+  margin-top:40px;
+  font-size:18px;
+  line-height:1.7;
+}
+
+select{border:0;background:transparent;font-weight:800}
+
+</style>
+</head>
+
+<body data-theme="sand">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="sand">Sand</option>
+      <option value="ink">Ink</option>
+      <option value="olive">Olive</option>
+      <option value="copper">Copper</option>
+      <option value="noir">Noir</option>
+    </select>
+  </div>
+</div>
+
+<main class="stage">
+  <div class="bigtype">GROW<br>TH</div>
+
+  <p class="text">
+    Izaugsme nav lineāra. Tā sastāv no slāņiem, lēmumiem,
+    pauzēm un drosmes skatīties sevī.
+    Šeit koučings satiekas ar struktūru.
+  </p>
+
+  <div class="layer l1"></div>
+  <div class="layer l2"></div>
+  <div class="layer l3"></div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
