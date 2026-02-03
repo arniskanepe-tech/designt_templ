@@ -1,1 +1,298 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Layout 15 — Energy Wall</title>
 
+<style>
+/* ===== Layout 15 themes (local only) ===== */
+:root{
+  --bg:#faf4ed;
+  --ink:#1b1511;
+  --muted:#6a5a52;
+  --a:#c06b3f;
+  --b:#5e7a62;
+  --c:#c05b78;
+  --glass: rgba(255,255,255,.62);
+  --line: rgba(0,0,0,.14);
+}
+[data-theme="warm"]{--bg:#faf4ed;--ink:#1b1511;--a:#c06b3f;--b:#5e7a62;--c:#c05b78}
+[data-theme="latte"]{--bg:#fbf7f1;--ink:#1f1713;--a:#b77a3a;--b:#6b7a4e;--c:#9aa7b5}
+[data-theme="rose"]{--bg:#fff2f4;--ink:#231316;--a:#c05b78;--b:#c06b3f;--c:#6b7a4e}
+[data-theme="sage"]{--bg:#f1f3ef;--ink:#161a15;--a:#6b7a4e;--b:#5e7a62;--c:#b77a3a}
+[data-theme="night"]{
+  --bg:#0f0f10;--ink:#f6efe7;--muted:rgba(246,239,231,.72);
+  --a:#d9a24a;--b:#8bd0ff;--c:#ff6aa8;
+  --glass: rgba(255,255,255,.06);--line: rgba(246,239,231,.14);
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* controls */
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;gap:10px;z-index:50
+}
+.pill{
+  background:var(--glass);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px 12px;
+  backdrop-filter: blur(12px);
+  display:flex;gap:10px;align-items:center;
+}
+.pill label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pill select{border:0;outline:0;background:transparent;font-weight:900;cursor:pointer;color:var(--ink)}
+[data-layout-nav] .navButtons{display:none !important;}
+[data-layout-nav] .navLabel{display:none !important;}
+[data-layout-nav] select{font-size:12px}
+
+/* MAX background layers */
+.bg{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* 1) dot field */
+.bg:before{
+  content:"";
+  position:absolute; inset:0;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity:.35;
+}
+/* 2) diagonal arrows */
+.bg:after{
+  content:"";
+  position:absolute; inset:-20%;
+  background:
+    repeating-linear-gradient(45deg,
+      transparent 0 28px,
+      rgba(0,0,0,.06) 28px 29px,
+      transparent 29px 56px);
+  transform: rotate(-6deg);
+  opacity:.45;
+}
+[data-theme="night"] .bg:after{background:
+  repeating-linear-gradient(45deg,
+    transparent 0 28px,
+    rgba(246,239,231,.10) 28px 29px,
+    transparent 29px 56px);
+}
+
+/* 3) rings layer */
+.rings{
+  position:fixed; inset:0; pointer-events:none; z-index:1;
+}
+.ring{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(0,0,0,.12);
+  opacity:.35;
+}
+[data-theme="night"] .ring{border-color: rgba(246,239,231,.12);}
+.r1{width:900px;height:900px;left:-260px;top:-240px}
+.r2{width:650px;height:650px;right:-220px;top:80px}
+.r3{width:520px;height:520px;left:20%;bottom:-280px}
+
+/* 4) flow lines (svg) */
+.flow{
+  position:fixed; inset:0; pointer-events:none; z-index:2; opacity:.55;
+}
+
+/* page */
+.page{
+  position:relative;
+  z-index:3;
+  min-height:100svh;
+  padding:120px 18px 80px;
+  display:grid;
+  place-items:center;
+}
+
+.frame{
+  width:min(1120px, 100%);
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:18px;
+  align-items:stretch;
+}
+
+/* content slab */
+.slab{
+  background: var(--glass);
+  border:1px solid var(--line);
+  border-radius: 26px;
+  padding: 22px;
+  backdrop-filter: blur(12px);
+}
+.slab h1{
+  margin:0;
+  font-size: clamp(30px, 4.2vw, 56px);
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+.slab p{
+  margin:16px 0 0;
+  color: var(--muted);
+  line-height:1.75;
+  max-width: 68ch;
+  font-size:15px;
+}
+.bars{
+  margin-top:18px;
+  display:grid;
+  gap:10px;
+}
+.bar{
+  height:10px;
+  border-radius:999px;
+  background: rgba(0,0,0,.08);
+  overflow:hidden;
+}
+[data-theme="night"] .bar{background: rgba(255,255,255,.08);}
+.bar > i{
+  display:block; height:100%;
+  background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+  width: 70%;
+}
+.bar:nth-child(2) > i{width:48%}
+.bar:nth-child(3) > i{width:86%}
+
+.actions{
+  margin-top:16px;
+  display:flex; flex-wrap:wrap; gap:10px;
+}
+.actions a{
+  display:inline-flex;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.10);
+  font-weight:900;
+}
+.actions a.primary{
+  border-color:transparent;
+  background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+  color:#111;
+}
+
+/* visual column: 2-image composition but NOT card/collage */
+.visual{
+  border-radius: 26px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(700px 420px at 30% 20%, rgba(255,255,255,.14), transparent 60%),
+    url("assets/zen.jpg") center/cover no-repeat;
+  position:relative;
+}
+.ribbon{
+  position:absolute;
+  top:0; right:0;
+  width: 34%;
+  height: 100%;
+  background: url("assets/stones.jpg") center/cover no-repeat;
+  filter: contrast(1.05);
+  mix-blend-mode: multiply;
+  opacity:.85;
+}
+[data-theme="night"] .ribbon{mix-blend-mode: screen; opacity:.42;}
+.window{
+  position:absolute;
+  left:18px; bottom:18px;
+  width: 62%;
+  height: 44%;
+  border-radius: 20px;
+  border:1px solid var(--line);
+  background: url("assets/kristina.jpg") center/cover no-repeat;
+  box-shadow: 0 22px 60px rgba(0,0,0,.18);
+}
+
+@media (max-width: 980px){
+  .frame{grid-template-columns:1fr}
+  .window{width: 78%}
+}
+</style>
+</head>
+
+<body data-theme="warm">
+  <div class="top">
+    <div class="pill"><div data-layout-nav></div></div>
+    <div class="pill">
+      <label for="t15">Theme</label>
+      <select id="t15">
+        <option value="warm">Warm</option>
+        <option value="latte">Latte</option>
+        <option value="rose">Rose</option>
+        <option value="sage">Sage</option>
+        <option value="night">Night</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="rings" aria-hidden="true">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+  </div>
+
+  <div class="flow" aria-hidden="true">
+    <svg viewBox="0 0 1200 600" preserveAspectRatio="none" style="width:100%;height:100%">
+      <path d="M0,140 C220,80 420,220 640,140 860,60 1000,160 1200,110" fill="none" stroke="var(--a)" stroke-width="1.2" opacity=".32"/>
+      <path d="M0,320 C200,360 420,250 620,310 820,370 1000,300 1200,330" fill="none" stroke="var(--b)" stroke-width="1.2" opacity=".28"/>
+      <path d="M0,470 C220,420 420,560 640,470 860,380 1000,520 1200,450" fill="none" stroke="var(--c)" stroke-width="1.2" opacity=".24"/>
+    </svg>
+  </div>
+
+  <main class="page">
+    <section class="frame">
+      <div class="slab">
+        <h1>Enerģija fonā.<br>Skaidrība priekšplānā.</h1>
+        <p>
+          Šis ir “maksimālais fons”: virzieni, punkti, apļi, plūsma, progresijas joslas.
+          Un tajā pašā laikā — saturs paliek tīrs, lasāms un premium.
+        </p>
+
+        <div class="bars">
+          <div class="bar"><i></i></div>
+          <div class="bar"><i></i></div>
+          <div class="bar"><i></i></div>
+        </div>
+
+        <div class="actions">
+          <a class="primary" href="#">Pieteikt sarunu</a>
+          <a href="#">Pakalpojumi</a>
+          <a href="#">Kontakti</a>
+        </div>
+      </div>
+
+      <div class="visual" aria-label="Vizualizācija ar 2-3 attēlu slāņiem">
+        <div class="ribbon" aria-hidden="true"></div>
+        <div class="window" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const root=document.body, sel=document.getElementById('t15');
+      const key='layout15_theme';
+      const saved=localStorage.getItem(key);
+      if(saved){root.setAttribute('data-theme', saved); sel.value=saved;}
+      sel.addEventListener('change', ()=>{
+        root.setAttribute('data-theme', sel.value);
+        localStorage.setItem(key, sel.value);
+      });
+    })();
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
