@@ -1,1 +1,144 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 17 — Signal Overload</title>
 
+<style>
+:root{
+  --bg:#faf6f0;
+  --ink:#161412;
+  --a:#c06b3f;
+  --b:#5e7a62;
+  --c:#c05b78;
+}
+[data-theme="warm"]{--bg:#faf6f0;--a:#c06b3f;--b:#5e7a62;--c:#c05b78}
+[data-theme="sage"]{--bg:#f1f3ef;--a:#6b7a4e;--b:#5e7a62;--c:#b77a3a}
+[data-theme="mono"]{--bg:#f2f2f2;--a:#333;--b:#777;--c:#aaa}
+[data-theme="night"]{--bg:#0e0e10;--ink:#f6efe7;--a:#d9a24c;--b:#8bd0ff;--c:#ff6aa8}
+[data-theme="rose"]{--bg:#fff2f4;--a:#c05b78;--b:#c06b3f;--c:#6b7a4e}
+
+body{
+  margin:0;
+  font-family:system-ui;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;z-index:10
+}
+.pill{background:#fff;padding:10px 12px}
+select{border:0;background:transparent;font-weight:800}
+
+/* background chaos */
+.bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+}
+.bg:before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, var(--a) 1px, transparent 1px),
+    radial-gradient(circle at 60% 70%, var(--b) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, var(--c) 1px, transparent 1px);
+  background-size:18px 18px;
+  opacity:.35;
+}
+.bg:after{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 24px,
+      rgba(0,0,0,.08) 24px 25px
+    );
+  opacity:.25;
+}
+
+.vectors{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+}
+
+main{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:120px 18px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+h1{
+  font-size:clamp(38px,5vw,64px);
+  line-height:1.05;
+}
+p{
+  max-width:520px;
+  line-height:1.7;
+  margin-top:18px;
+}
+
+.signal{
+  margin-top:26px;
+  display:grid;
+  gap:8px;
+}
+.bar{
+  height:8px;
+  background:rgba(0,0,0,.12);
+}
+.bar i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,var(--a),var(--b),var(--c));
+  width:80%;
+}
+
+</style>
+</head>
+
+<body data-theme="warm">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="warm">Warm Tech</option>
+      <option value="sage">Sage Tech</option>
+      <option value="mono">Mono</option>
+      <option value="night">Night Signal</option>
+      <option value="rose">Rose Data</option>
+    </select>
+  </div>
+</div>
+
+<div class="bg"></div>
+
+<div class="vectors">
+<svg viewBox="0 0 1200 600" preserveAspectRatio="none" style="width:100%;height:100%">
+  <line x1="0" y1="100" x2="1200" y2="220" stroke="var(--a)" opacity=".25"/>
+  <line x1="0" y1="360" x2="1200" y2="260" stroke="var(--b)" opacity=".25"/>
+  <line x1="0" y1="520" x2="1200" y2="420" stroke="var(--c)" opacity=".25"/>
+</svg>
+</div>
+
+<main>
+  <h1>Signāli ir visur.<br>Jautājums — ko tu dzirdi?</h1>
+  <p>
+    Koučings palīdz atšķirt troksni no būtiskā.
+    Kad signāls ir skaidrs, kustība kļūst precīza.
+  </p>
+
+  <div class="signal">
+    <div class="bar"><i></i></div>
+    <div class="bar"><i></i></div>
+    <div class="bar"><i></i></div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
