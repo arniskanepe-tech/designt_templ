@@ -1,2 +1,263 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Layout 2</title></head>
-<body><div data-layout-nav></div><h1>Layout 2</h1><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Layout 2 — Warm Rounded</title>
+
+  <style>
+    :root{
+      --bg:#fff6ee;
+      --card:#ffffff;
+      --ink:#2a1c14;
+      --muted:#6f5c52;
+      --accent:#c96a3b;
+      --accent2:#f2c3a0;
+      --ring: rgba(201,106,59,.18);
+      --shadow: 0 22px 60px rgba(42,28,20,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial;}
+    a{color:inherit;text-decoration:none}
+
+    /* Layout switch (no app.js) — šeit tas ir “iekš lapas” kā mīksts laukums */
+    [data-layout-nav]{
+      max-width:1100px;
+      margin: 14px auto 0;
+      padding: 0 18px;
+    }
+    [data-layout-nav] .navButtons{display:none !important;}
+    [data-layout-nav] .navLabel{display:none !important;}
+    [data-layout-nav] .navRow{display:block !important;}
+    [data-layout-nav] select{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(42,28,20,.16);
+      background: rgba(255,255,255,.85);
+      box-shadow: 0 10px 28px rgba(0,0,0,.06);
+      font-weight:700;
+      color: var(--ink);
+    }
+
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 18px 74px;position:relative}
+    .wrap:before{
+      content:"";
+      position:absolute; inset:-120px -80px auto auto;
+      width:520px;height:520px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(242,195,160,.65), rgba(201,106,59,.08), transparent 60%);
+      pointer-events:none;
+    }
+    .wrap:after{
+      content:"";
+      position:absolute; inset:auto auto -140px -120px;
+      width:620px;height:620px;border-radius: 42% 58% 55% 45% / 45% 45% 55% 55%;
+      background: radial-gradient(circle at 40% 40%, rgba(201,106,59,.14), transparent 60%);
+      pointer-events:none;
+    }
+
+    header{
+      position:relative;
+      margin-top:14px;
+      background: var(--card);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow:hidden;
+    }
+    .topline{
+      display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .brand{
+      display:inline-flex;align-items:center;gap:10px;
+      font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+      font-size:12px; color: var(--muted);
+    }
+    .blob{
+      width:12px;height:12px;border-radius:6px;
+      background: linear-gradient(180deg, var(--accent2), var(--accent));
+      box-shadow: 0 0 0 10px rgba(201,106,59,.08);
+    }
+
+    .hero{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .copy{
+      padding: 10px 6px 0;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(30px, 3.4vw, 44px);
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+    .lead{
+      margin:12px 0 0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size: 15px;
+      max-width: 70ch;
+    }
+
+    .bubbles{
+      margin-top:14px;
+      display:flex;flex-wrap:wrap;gap:10px;
+    }
+    .bubble{
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(242,195,160,.35);
+      border: 1px solid var(--ring);
+      font-size:13px;
+      color: #4e3a31;
+      font-weight:600;
+    }
+
+    .side{
+      background:
+        radial-gradient(260px 220px at 70% 20%, rgba(242,195,160,.55), transparent 65%),
+        #fff;
+      border-radius: 26px;
+      border:1px solid rgba(42,28,20,.12);
+      overflow:hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+      display:grid;
+      grid-template-rows: 220px auto;
+    }
+    .zen{
+      background: url("assets/zen.jpg") center/cover no-repeat;
+      position:relative;
+    }
+    .zen:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.92));
+    }
+    .card{
+      padding: 16px;
+    }
+    .name{
+      font-weight:900;
+      font-size: 16px;
+      letter-spacing:-.01em;
+    }
+    .role{
+      margin-top:6px;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .ctaRow{
+      margin-top:16px;
+      display:flex;flex-wrap:wrap;gap:10px;
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(42,28,20,.16);
+      background:#fff;
+      font-weight:800;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(201,106,59,.18), rgba(201,106,59,.06));
+      border-color: rgba(201,106,59,.35);
+    }
+
+    .grid{
+      position:relative;
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+    }
+    .tile{
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(42,28,20,.12);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.05);
+      min-height: 150px;
+    }
+    .tile b{display:block;font-size:13px}
+    .tile p{margin:8px 0 0;color:var(--muted);line-height:1.65;font-size:13px}
+
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .side{grid-template-rows: 200px auto}
+    }
+  </style>
+</head>
+
+<body>
+  <div data-layout-nav></div>
+
+  <div class="wrap">
+    <header>
+      <div class="topline">
+        <div class="brand"><span class="blob"></span> HR konsultācijas & koučings</div>
+      </div>
+
+      <div class="hero">
+        <div class="copy">
+          <h1>Praktiska personāla vadība ar koučinga domāšanu — uzņēmumiem, kuri grib augt.</h1>
+
+          <p class="lead">
+            Es apvienoju pilna cikla HR pieredzi (atlase, onbordings, attīstības pārrunas, iesaiste, pārmaiņu vadība)
+            ar sistēmisku koučinga pieeju, lai vadītāji un komandas strādā mierīgāk, skaidrāk un rezultātā — efektīvāk.
+            (Lapas palaišanas brīdī koučinga sertifikācija jau ir iegūta.)
+          </p>
+
+          <div class="bubbles">
+            <span class="bubble">Atlase, kas trāpa</span>
+            <span class="bubble">Onbordings 30/60/90</span>
+            <span class="bubble">Vadītāju sarunas</span>
+            <span class="bubble">Iesaistes projekti</span>
+            <span class="bubble">Strukturālas pārmaiņas</span>
+          </div>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="#">Pieteikt zvanu</a>
+            <a class="btn" href="#">Nosūtīt jautājumu</a>
+          </div>
+        </div>
+
+        <aside class="side">
+          <div class="zen" aria-label="Miers un fokuss"></div>
+          <div class="card">
+            <div class="name">Kristīna Kaņepe</div>
+            <div class="role">
+              Personāla vadības profesionāle ar ilggadēju pieredzi, kas sakārto sistēmu un vienlaikus saglabā cilvēcību:
+              stratēģija, atlīdzības principi, iesaiste, attīstība un sadarbība ar vadītājiem.
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="grid">
+        <div class="tile">
+          <b>1) Sakārtojam pamatu</b>
+          <p>Procesi, atbildības, dokumenti un skaidrs ritms — lai HR nav “ugunsdzēsība”.</p>
+        </div>
+        <div class="tile">
+          <b>2) Stiprinām vadītājus</b>
+          <p>Koučinga sarunas, atgriezeniskā saite, mērķi un robežas — praktiski un cilvēcīgi.</p>
+        </div>
+        <div class="tile">
+          <b>3) Noturam rezultātu</b>
+          <p>Mērījumi, iesaiste un attīstības kultūra, lai izmaiņas nepazūd pēc mēneša.</p>
+        </div>
+      </section>
+    </header>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
