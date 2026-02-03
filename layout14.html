@@ -1,1 +1,307 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Layout 14 — Brutalist Luxury</title>
 
+<style>
+/* ===== Layout 14 themes (local only) ===== */
+:root{
+  --bg:#f3efe9;
+  --ink:#0f0f10;
+  --muted:rgba(15,15,16,.72);
+  --accent:#c56a2b;
+  --warn:#111;
+  --paper:#fff;
+  --line: rgba(15,15,16,.16);
+  --stripeA:#111;
+  --stripeB:#f0d8c6;
+}
+[data-theme="sandpaper"]{--bg:#f3efe9;--ink:#0f0f10;--accent:#c56a2b;--stripeB:#f0d8c6}
+[data-theme="tar"]{--bg:#0b0b0c;--ink:#f2efe9;--muted:rgba(242,239,233,.72);--accent:#d9a24a;--paper:rgba(255,255,255,.07);--line:rgba(242,239,233,.14);--stripeA:#f2efe9;--stripeB:#3a2b1b}
+[data-theme="cement"]{--bg:#f1f2f3;--ink:#121314;--accent:#4f6b7a;--stripeB:#dbe5ec}
+[data-theme="clay"]{--bg:#fbf1ea;--ink:#1b1411;--accent:#b65a44;--stripeB:#f2d0c5}
+[data-theme="olive"]{--bg:#eff1ec;--ink:#151813;--accent:#6b7a4e;--stripeB:#dbe2cf}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* top controls */
+.top{
+  position:fixed; top:14px; left:14px; right:14px;
+  display:flex; justify-content:space-between; gap:10px;
+  z-index:50;
+}
+.pill{
+  background: var(--paper);
+  border:2px solid var(--ink);
+  padding:10px 12px;
+  display:flex; gap:10px; align-items:center;
+}
+[data-theme="tar"] .pill{border-color: var(--ink);}
+.pill label{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color: var(--muted);
+}
+.pill select{border:0;outline:0;background:transparent;font-weight:900;cursor:pointer;color:var(--ink)}
+[data-layout-nav] .navButtons{display:none !important;}
+[data-layout-nav] .navLabel{display:none !important;}
+[data-layout-nav] select{font-size:12px}
+
+/* background brutal stripes */
+.stripes{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--stripeA) 0 10px,
+      var(--stripeB) 10px 20px
+    );
+  opacity:.14;
+}
+[data-theme="tar"] .stripes{opacity:.10}
+
+/* micro grid overlay */
+.micro{
+  position:fixed; inset:0; pointer-events:none; z-index:1;
+  background:
+    linear-gradient(rgba(0,0,0,.08) 1px, transparent 1px) 0 0/ 28px 28px,
+    linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px) 0 0/ 28px 28px;
+  mix-blend-mode:multiply;
+  opacity:.35;
+}
+[data-theme="tar"] .micro{
+  background:
+    linear-gradient(rgba(255,255,255,.10) 1px, transparent 1px) 0 0/ 28px 28px,
+    linear-gradient(90deg, rgba(255,255,255,.10) 1px, transparent 1px) 0 0/ 28px 28px;
+  opacity:.18;
+}
+
+/* page */
+.page{
+  position:relative;
+  z-index:2;
+  padding: 120px 16px 80px;
+  max-width: 1180px;
+  margin:0 auto;
+}
+
+/* brutal header block */
+.header{
+  border: 4px solid var(--ink);
+  background: var(--paper);
+  padding: 18px 18px 14px;
+}
+.kicker{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  font-size:12px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color: var(--muted);
+}
+h1{
+  margin:14px 0 10px;
+  font-size: clamp(32px, 5vw, 66px);
+  line-height:.95;
+  letter-spacing:-.06em;
+}
+.sub{
+  margin:0;
+  max-width: 80ch;
+  color: var(--muted);
+  line-height:1.8;
+  font-size:14px;
+}
+
+/* stamp */
+.stamp{
+  margin-top:14px;
+  display:inline-flex;
+  padding: 10px 12px;
+  border: 3px dashed var(--ink);
+  transform: rotate(-3deg);
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  background: linear-gradient(180deg, rgba(0,0,0,.06), transparent);
+}
+.stamp b{color:var(--accent)}
+
+/* body layout unique: asym rows */
+.grid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns: 1.3fr .7fr;
+  gap:16px;
+  align-items:start;
+}
+
+/* Image block: hard corners + thick border */
+.photo{
+  height: 420px;
+  border: 4px solid var(--ink);
+  background: url("assets/kristina.jpg") center/cover no-repeat;
+  position:relative;
+}
+.photo:after{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border:2px solid var(--ink);
+  pointer-events:none;
+}
+
+/* right stack: tickets */
+.ticket{
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  padding: 14px;
+  margin-bottom:12px;
+}
+.ticket b{
+  display:block;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-size:12px;
+}
+.ticket p{
+  margin:10px 0 0;
+  color: var(--muted);
+  line-height:1.7;
+  font-size:13px;
+}
+
+/* CTA ugly-luxury */
+.ctaRow{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin-top:8px;
+}
+.btn{
+  display:inline-flex;
+  padding: 12px 14px;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:12px;
+}
+.btn.primary{
+  background: var(--accent);
+  border-color: transparent;
+  color:#fff;
+}
+
+/* second image strip (unique) */
+.strip{
+  margin-top:16px;
+  border: 4px solid var(--ink);
+  height: 140px;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.12), transparent 35%, rgba(0,0,0,.12)),
+    url("assets/path.jpg") center/cover no-repeat;
+  filter: contrast(1.02);
+}
+
+@media (max-width: 980px){
+  .grid{grid-template-columns:1fr}
+  .photo{height:340px}
+}
+</style>
+</head>
+
+<body data-theme="sandpaper">
+  <div class="top">
+    <div class="pill"><div data-layout-nav></div></div>
+    <div class="pill">
+      <label for="t14">Theme</label>
+      <select id="t14">
+        <option value="sandpaper">Sandpaper</option>
+        <option value="tar">Tar</option>
+        <option value="cement">Cement</option>
+        <option value="clay">Clay</option>
+        <option value="olive">Olive</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="stripes" aria-hidden="true"></div>
+  <div class="micro" aria-hidden="true"></div>
+
+  <main class="page">
+    <section class="header">
+      <div class="kicker">
+        <span>HR • COACHING • STRUCTURE</span>
+        <span>VER.14 / DRAFT</span>
+      </div>
+
+      <h1>NEGLĪTS.<br>BET DĀRGS.</h1>
+
+      <p class="sub">
+        Profesionāls koučings + personāla vadība bez “cukurošanas”.
+        Tiešas sarunas, skaidri soļi, izmērāmi rezultāti. Premium sajūta rodas no disciplīnas, nevis dekorācijām.
+      </p>
+
+      <div class="stamp">CERTIFIED <b>COACH</b> / EXEC HR</div>
+
+      <div class="ctaRow">
+        <a class="btn primary" href="#">Rezervēt zvanu</a>
+        <a class="btn" href="#">Pakalpojumi</a>
+        <a class="btn" href="#">Kontakti</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="photo" aria-label="Kristīnas foto"></div>
+
+      <aside>
+        <div class="ticket">
+          <b>FOKUSS</b>
+          <p>Vadītāji, komandas, izaugsme. Nevis skaistas frāzes, bet uzvedības maiņa ikdienā.</p>
+        </div>
+
+        <div class="ticket">
+          <b>PIEEJA</b>
+          <p>Struktūra + cilvēcīgums. Process, ko var atkārtot un noturēt arī pēc sadarbības.</p>
+        </div>
+
+        <div class="ticket">
+          <b>IZVADS</b>
+          <p>Konkrēts plāns, sarunu rāmji, un mērīšana. Progress nav sajūta — tas ir modelis.</p>
+        </div>
+      </aside>
+    </section>
+
+    <div class="strip" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    (function(){
+      const root=document.body, sel=document.getElementById('t14');
+      const key='layout14_theme';
+      const saved=localStorage.getItem(key);
+      if(saved){root.setAttribute('data-theme', saved); sel.value=saved;}
+      sel.addEventListener('change', ()=>{
+        root.setAttribute('data-theme', sel.value);
+        localStorage.setItem(key, sel.value);
+      });
+    })();
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
