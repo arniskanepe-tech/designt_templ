@@ -1,1 +1,93 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 19 — Framed Clarity</title>
 
+<style>
+:root{
+  --bg:#faf6f0;
+  --ink:#1c1815;
+  --muted:#6a5e56;
+  --accent:#b77a3a;
+  --line:rgba(0,0,0,.16);
+}
+[data-theme="sand"]{--bg:#faf6f0;--accent:#b77a3a}
+[data-theme="taupe"]{--bg:#f2ede8;--accent:#8a7d73}
+[data-theme="sage"]{--bg:#f1f3ef;--accent:#6b7a4e}
+[data-theme="grey"]{--bg:#f2f2f2;--accent:#888}
+[data-theme="clay"]{--bg:#fbf1ea;--accent:#c06b3f}
+
+body{
+  margin:0;
+  font-family:system-ui;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;z-index:10
+}
+.pill{background:#fff;padding:10px 12px;border-radius:12px}
+
+.page{
+  padding:120px 8vw 80px;
+}
+
+.frame{
+  border:1px solid var(--line);
+  padding:40px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:40px;
+}
+
+.photo{
+  min-height:420px;
+  background:url("assets/kristina.jpg") center/cover;
+}
+
+h1{font-size:44px;line-height:1.1}
+p{line-height:1.7;color:var(--muted)}
+
+select{border:0;background:transparent;font-weight:800}
+
+@media(max-width:900px){
+  .frame{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body data-theme="sand">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="sand">Sand</option>
+      <option value="taupe">Taupe</option>
+      <option value="sage">Sage</option>
+      <option value="grey">Grey</option>
+      <option value="clay">Clay</option>
+    </select>
+  </div>
+</div>
+
+<main class="page">
+  <section class="frame">
+    <div>
+      <h1>Skaidra struktūra rada mieru.</h1>
+      <p>
+        Šī pieeja apvieno profesionālu personāla vadību
+        ar koučingu, kas ienes kārtību,
+        sapratni un noturīgu izaugsmi.
+      </p>
+    </div>
+    <div class="photo"></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
