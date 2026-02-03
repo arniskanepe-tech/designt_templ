@@ -1,1 +1,114 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 18 — Human Presence</title>
 
+<style>
+:root{
+  --bg:#f7f3ee;
+  --ink:#1e1a17;
+  --muted:#6a5f57;
+  --accent:#b77a3a;
+  --line:rgba(0,0,0,.10);
+}
+[data-theme="linen"]{--bg:#f7f3ee;--accent:#b77a3a}
+[data-theme="clay"]{--bg:#f6efe9;--accent:#c06b3f}
+[data-theme="sage"]{--bg:#f1f3ef;--accent:#6b7a4e}
+[data-theme="stone"]{--bg:#edeae6;--accent:#8a7d73}
+[data-theme="mist"]{--bg:#f2f2f2;--accent:#888}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:120px 10vw 80px;
+}
+
+.photo{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.05)),
+    url("assets/kristina.jpg") center/cover no-repeat;
+}
+
+.curves{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.curves svg{width:100%;height:100%}
+
+.content{
+  position:relative;
+  max-width:520px;
+}
+
+h1{
+  font-size:clamp(36px,5vw,60px);
+  line-height:1.05;
+}
+p{
+  margin-top:18px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;z-index:10
+}
+.pill{background:#fff;padding:10px 12px;border-radius:12px}
+
+select{border:0;background:transparent;font-weight:800}
+</style>
+</head>
+
+<body data-theme="linen">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="linen">Linen</option>
+      <option value="clay">Clay</option>
+      <option value="sage">Sage</option>
+      <option value="stone">Stone</option>
+      <option value="mist">Mist</option>
+    </select>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="photo"></div>
+
+  <div class="curves" aria-hidden="true">
+    <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
+      <path d="M0,420 C260,360 420,480 620,420 820,360 1000,440 1200,400"
+        fill="none" stroke="var(--accent)" stroke-width="1.5" opacity=".35"/>
+    </svg>
+  </div>
+
+  <div class="content">
+    <h1>Saruna sākas ar klātbūtni.</h1>
+    <p>
+      Personāla vadība un koučings,
+      kas balstīts mierā, skaidrībā
+      un cieņpilnā attiecībā ar cilvēku.
+    </p>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
