@@ -1,93 +1,240 @@
 <!doctype html>
 <html lang="lv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Layout 19 — Framed Clarity</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Layout 19 — Trust Architecture (Framed)</title>
 
 <style>
 :root{
-  --bg:#faf6f0;
-  --ink:#1c1815;
-  --muted:#6a5e56;
+  --bg:#fbf7f1;
+  --ink:#1f1713;
+  --muted:#6a5a52;
   --accent:#b77a3a;
-  --line:rgba(0,0,0,.16);
+  --accent2:#5e7a62;
+  --panel:#ffffff;
+  --line: rgba(31,23,19,.16);
 }
-[data-theme="sand"]{--bg:#faf6f0;--accent:#b77a3a}
-[data-theme="taupe"]{--bg:#f2ede8;--accent:#8a7d73}
-[data-theme="sage"]{--bg:#f1f3ef;--accent:#6b7a4e}
-[data-theme="grey"]{--bg:#f2f2f2;--accent:#888}
-[data-theme="clay"]{--bg:#fbf1ea;--accent:#c06b3f}
+[data-theme="linen"]{--bg:#fbf7f1;--ink:#1f1713;--accent:#b77a3a;--accent2:#5e7a62}
+[data-theme="rose"]{--bg:#fff2f4;--ink:#231316;--muted:rgba(35,19,22,.72);--accent:#c05b78;--accent2:#c06b3f;--line: rgba(35,19,22,.16)}
+[data-theme="sage"]{--bg:#f1f3ef;--ink:#161a15;--muted:rgba(22,26,21,.72);--accent:#6b7a4e;--accent2:#5e7a62;--line: rgba(22,26,21,.16)}
+[data-theme="clay"]{--bg:#fbf1ea;--ink:#1b1411;--muted:rgba(27,20,17,.72);--accent:#b65a44;--accent2:#b77a3a;--line: rgba(27,20,17,.16)}
+[data-theme="cocoa"]{--bg:#4a3b33;--ink:#f6efe7;--muted:rgba(246,239,231,.78);--accent:#d2a16a;--accent2:#a6c7a4;--panel: rgba(255,255,255,.06);--line: rgba(246,239,231,.18)}
 
-body{
-  margin:0;
-  font-family:system-ui;
-  background:var(--bg);
-  color:var(--ink);
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 
+/* top */
 .top{
-  position:fixed;top:14px;left:14px;right:14px;
-  display:flex;justify-content:space-between;z-index:10
+  position:fixed; top:14px; left:14px; right:14px;
+  display:flex; justify-content:space-between; gap:10px;
+  z-index:50;
 }
-.pill{background:#fff;padding:10px 12px;border-radius:12px}
-
-.page{
-  padding:120px 8vw 80px;
-}
-
-.frame{
+.pill{
+  background: rgba(255,255,255,.70);
   border:1px solid var(--line);
-  padding:40px;
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:40px;
+  border-radius:16px;
+  padding:10px 12px;
+  backdrop-filter: blur(12px);
+  display:flex; gap:10px; align-items:center;
 }
+[data-theme="cocoa"] .pill{background: rgba(255,255,255,.10);}
+.pill label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+[data-layout-nav] .navButtons{display:none !important;}
+[data-layout-nav] .navLabel{display:none !important;}
+[data-layout-nav] select{font-size:12px;border:0;background:transparent;font-weight:900;cursor:pointer}
 
+.themeBtns{display:flex;gap:6px;flex-wrap:wrap}
+.themeBtns button{
+  border:0; cursor:pointer;
+  padding:8px 10px; border-radius:10px;
+  font-weight:900; background:rgba(0,0,0,.06);
+}
+[data-theme="cocoa"] .themeBtns button{background:rgba(255,255,255,.10)}
+.themeBtns button[aria-pressed="true"]{background: linear-gradient(90deg, var(--accent), var(--accent2)); color:#111}
+
+/* background arcs (not grid) */
+.bg{
+  position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.45;
+}
+.bg svg{width:100%;height:100%}
+.bg path{fill:none;stroke: color-mix(in oklab, var(--accent) 55%, transparent);stroke-width:1.2}
+.bg path.alt{stroke: color-mix(in oklab, var(--accent2) 55%, transparent);opacity:.75}
+
+/* container */
+.page{position:relative;z-index:1;padding:120px 18px 80px}
+.container{
+  max-width:1160px;
+  margin:0 auto;
+  border-radius:28px;
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+  border:1px solid var(--line);
+  box-shadow: 0 24px 80px rgba(0,0,0,.10);
+  overflow:hidden;
+}
+.grid{display:grid;grid-template-columns: 1fr 1fr}
+.left{padding:22px}
 .photo{
-  min-height:420px;
-  background:url("assets/kristina.jpg") center/cover;
+  border-radius:22px;
+  overflow:hidden;
+  height: 520px;
+  background: url("assets/kristina.jpg") center/cover no-repeat;
+  position:relative;
 }
+.photo:before{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(700px 420px at 30% 20%, rgba(255,255,255,.22), transparent 60%),
+              radial-gradient(900px 520px at 70% 90%, rgba(0,0,0,.10), transparent 60%);
+  mix-blend-mode: overlay;
+}
+.right{padding:24px;border-left:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.kdot{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+h1{margin:14px 0 10px;font-size: clamp(30px, 3.6vw, 48px);line-height:1.08;letter-spacing:-.02em}
+.lead{margin:0;color:var(--muted);line-height:1.75;font-size:15px;max-width:66ch}
 
-h1{font-size:44px;line-height:1.1}
-p{line-height:1.7;color:var(--muted)}
+/* blocks */
+.blocks{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.block{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 14px 16px;
+  background: rgba(255,255,255,.55);
+}
+[data-theme="cocoa"] .block{background: rgba(255,255,255,.06);}
+.block b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.block p{margin:8px 0 0;color:var(--muted);line-height:1.6;font-size:13px}
 
-select{border:0;background:transparent;font-weight:800}
+/* 3 steps */
+.steps{margin-top:14px;border:1px dashed var(--line);border-radius:18px;padding:14px;background: rgba(255,255,255,.35)}
+[data-theme="cocoa"] .steps{background: rgba(255,255,255,.06);}
+.steps .row{display:grid;grid-template-columns: 26px 1fr;gap:10px;align-items:start;margin:10px 0}
+.num{
+  width:26px;height:26px;border-radius:8px;
+  display:grid;place-items:center;
+  font-weight:900;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color:#111;
+}
+.steps .txt{color:var(--muted);line-height:1.55;font-size:13px}
 
-@media(max-width:900px){
-  .frame{grid-template-columns:1fr}
+/* CTA */
+.cta{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px}
+.cta a{display:inline-flex;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background: rgba(255,255,255,.45);font-weight:900}
+[data-theme="cocoa"] .cta a{background: rgba(255,255,255,.08);}
+.cta a.primary{border-color:transparent;background: linear-gradient(90deg, var(--accent), var(--accent2));color:#111}
+
+@media (max-width: 980px){
+  .grid{grid-template-columns:1fr}
+  .right{border-left:0;border-top:1px solid var(--line)}
+  .photo{height: 420px}
+  .blocks{grid-template-columns:1fr}
 }
 </style>
 </head>
 
-<body data-theme="sand">
-<div class="top">
-  <div class="pill"><div data-layout-nav></div></div>
-  <div class="pill">
-    <select onchange="document.body.dataset.theme=this.value">
-      <option value="sand">Sand</option>
-      <option value="taupe">Taupe</option>
-      <option value="sage">Sage</option>
-      <option value="grey">Grey</option>
-      <option value="clay">Clay</option>
-    </select>
-  </div>
-</div>
-
-<main class="page">
-  <section class="frame">
-    <div>
-      <h1>Skaidra struktūra rada mieru.</h1>
-      <p>
-        Šī pieeja apvieno profesionālu personāla vadību
-        ar koučingu, kas ienes kārtību,
-        sapratni un noturīgu izaugsmi.
-      </p>
+<body data-theme="linen">
+  <div class="top">
+    <div class="pill"><div data-layout-nav></div></div>
+    <div class="pill">
+      <label>Theme</label>
+      <div class="themeBtns" id="themeBtns19">
+        <button type="button" data-theme="linen" aria-pressed="true">Linen</button>
+        <button type="button" data-theme="rose">Rose</button>
+        <button type="button" data-theme="sage">Sage</button>
+        <button type="button" data-theme="clay">Clay</button>
+        <button type="button" data-theme="cocoa">Cocoa</button>
+      </div>
     </div>
-    <div class="photo"></div>
-  </section>
-</main>
+  </div>
 
-<script src="app.js"></script>
+  <div class="bg" aria-hidden="true">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="none">
+      <path d="M-80,520 C260,240 520,260 740,420 980,600 1120,420 1280,320"/>
+      <path class="alt" d="M-60,260 C220,60 520,140 720,240 920,340 1060,240 1260,160"/>
+      <path d="M-120,620 C220,560 420,460 620,560 820,660 980,560 1240,520"/>
+    </svg>
+  </div>
+
+  <main class="page">
+    <section class="container">
+      <div class="grid">
+        <div class="left">
+          <div class="photo" aria-label="Kristīnas portrets"></div>
+        </div>
+
+        <div class="right">
+          <div class="kicker"><span class="kdot"></span> HR sistēmas • Vadītāju atbalsts • Koučings</div>
+          <h1>Uzticība rodas no procesa — un no attiecībām.</h1>
+          <p class="lead">
+            Kristīna apvieno HR pieredzi ar koučinga pieeju: skaidri rāmji, droša sarunu telpa un praktiski soļi,
+            kas palīdz vadītājiem pieņemt lēmumus un komandām strādāt vienoti.
+          </p>
+
+          <div class="blocks">
+            <div class="block">
+              <b>Atlase & onbords</b>
+              <p>Spēcīgs starts: pareizie cilvēki, skaidras gaidas, ātrāka ieiešana lomā.</p>
+            </div>
+            <div class="block">
+              <b>Attīstība</b>
+              <p>Individuālie plāni, mācību virzieni, karjeras ceļi un snieguma sarunas.</p>
+            </div>
+            <div class="block">
+              <b>Kultūra & iesaiste</b>
+              <p>Vienoti principi, sadarbība, iekšējā komunikācija un noturīga motivācija.</p>
+            </div>
+            <div class="block">
+              <b>Pārmaiņu vadība</b>
+              <p>Procesi, kas iztur slodzi: skaidrība, ritms, robežas un atbildības.</p>
+            </div>
+          </div>
+
+          <div class="steps">
+            <div class="row">
+              <div class="num">1</div>
+              <div class="txt"><b>Diagnostika:</b> situācija, mērķi, šķēršļi un īstie “mezgli”.</div>
+            </div>
+            <div class="row">
+              <div class="num">2</div>
+              <div class="txt"><b>Rīcības plāns:</b> sarunu rāmji, cilvēku procesi, vadītāju prakse.</div>
+            </div>
+            <div class="row">
+              <div class="num">3</div>
+              <div class="txt"><b>Ieviešana:</b> atbalsts, mērīšana, korekcijas un noturība.</div>
+            </div>
+          </div>
+
+          <div class="cta">
+            <a class="primary" href="#">Rezervēt ievadzvanu</a>
+            <a href="#">Pakalpojumi</a>
+            <a href="#">Pieredze</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const root=document.body, wrap=document.getElementById('themeBtns19'), key='layout19_theme';
+      const saved=localStorage.getItem(key);
+      const set=(t)=>{
+        root.setAttribute('data-theme', t);
+        localStorage.setItem(key, t);
+        [...wrap.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', b.dataset.theme===t?'true':'false'));
+      };
+      if(saved) set(saved);
+      wrap.addEventListener('click',(e)=>{
+        const btn=e.target.closest('button[data-theme]');
+        if(!btn) return;
+        set(btn.dataset.theme);
+      });
+    })();
+  </script>
+
+  <script src="app.js"></script>
 </body>
 </html>
