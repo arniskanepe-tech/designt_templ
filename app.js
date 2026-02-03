@@ -1,4 +1,4 @@
-const LAYOUTS=[...Array(10)].map((_,i)=>({file:`layout${i+1}.html`,title:`Layout ${i+1}`}));
+const LAYOUTS=[...Array(20)].map((_,i)=>({file:`layout${i+1}.html`,title:`Layout ${i+1}`}));
 document.addEventListener("DOMContentLoaded",()=>{
  const list=document.querySelector('[data-layout-list]');
  if(list) LAYOUTS.forEach(l=>{const a=document.createElement('a');a.href=l.file;a.textContent=l.title;list.append(a,document.createElement('br'));});
