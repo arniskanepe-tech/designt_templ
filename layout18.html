@@ -1,114 +1,337 @@
 <!doctype html>
 <html lang="lv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Layout 18 — Human Presence</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Layout 18 — Aura Ribbons (Sales Hero)</title>
 
 <style>
 :root{
-  --bg:#f7f3ee;
-  --ink:#1e1a17;
-  --muted:#6a5f57;
-  --accent:#b77a3a;
-  --line:rgba(0,0,0,.10);
+  --bg:#fbf6ef;
+  --ink:#1b1714;
+  --muted:rgba(27,23,20,.72);
+  --a:#c06b3f;
+  --b:#5e7a62;
+  --c:#c05b78;
+  --line: rgba(27,23,20,.14);
+  --glass: rgba(255,255,255,.60);
 }
-[data-theme="linen"]{--bg:#f7f3ee;--accent:#b77a3a}
-[data-theme="clay"]{--bg:#f6efe9;--accent:#c06b3f}
-[data-theme="sage"]{--bg:#f1f3ef;--accent:#6b7a4e}
-[data-theme="stone"]{--bg:#edeae6;--accent:#8a7d73}
-[data-theme="mist"]{--bg:#f2f2f2;--accent:#888}
+[data-theme="apricot"]{--bg:#fbf6ef;--a:#c06b3f;--b:#5e7a62;--c:#c05b78}
+[data-theme="latte"]{--bg:#fbf7f1;--a:#b77a3a;--b:#6b7a4e;--c:#7a6b5f}
+[data-theme="roseclay"]{--bg:#fff2f4;--ink:#231316;--muted:rgba(35,19,22,.72);--a:#c05b78;--b:#c06b3f;--c:#6b7a4e;--line: rgba(35,19,22,.14)}
+[data-theme="sage"]{--bg:#f1f3ef;--ink:#161a15;--muted:rgba(22,26,21,.72);--a:#6b7a4e;--b:#5e7a62;--c:#b77a3a;--line: rgba(22,26,21,.14)}
+[data-theme="cocoa"]{--bg:#4a3b33;--ink:#f6efe7;--muted:rgba(246,239,231,.78);--a:#d2a16a;--b:#a6c7a4;--c:#e2a0b4;--line: rgba(246,239,231,.18);--glass: rgba(255,255,255,.10)}
 
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   background:var(--bg);
   color:var(--ink);
+  overflow-x:hidden;
 }
+a{color:inherit;text-decoration:none}
 
-.hero{
-  min-height:100vh;
-  position:relative;
-  display:flex;
-  align-items:center;
-  padding:120px 10vw 80px;
-}
-
-.photo{
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.05)),
-    url("assets/kristina.jpg") center/cover no-repeat;
-}
-
-.curves{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-.curves svg{width:100%;height:100%}
-
-.content{
-  position:relative;
-  max-width:520px;
-}
-
-h1{
-  font-size:clamp(36px,5vw,60px);
-  line-height:1.05;
-}
-p{
-  margin-top:18px;
-  line-height:1.7;
-  color:var(--muted);
-}
-
+/* top controls */
 .top{
-  position:fixed;top:14px;left:14px;right:14px;
-  display:flex;justify-content:space-between;z-index:10
+  position:fixed; top:14px; left:14px; right:14px;
+  display:flex; justify-content:space-between; gap:10px;
+  z-index:50;
 }
-.pill{background:#fff;padding:10px 12px;border-radius:12px}
+.pill{
+  background: var(--glass);
+  border:1px solid var(--line);
+  border-radius: 16px;
+  padding: 10px 12px;
+  backdrop-filter: blur(12px);
+  display:flex; gap:10px; align-items:center;
+}
+.pill label{
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--muted);
+}
+.pill select{display:none}
+[data-layout-nav] .navButtons{display:none !important;}
+[data-layout-nav] .navLabel{display:none !important;}
+[data-layout-nav] select{font-size:12px;border:0;background:transparent;font-weight:900;cursor:pointer}
 
-select{border:0;background:transparent;font-weight:800}
+/* theme buttons */
+.themeBtns{display:flex;gap:6px;flex-wrap:wrap}
+.themeBtns button{
+  border:0; cursor:pointer;
+  padding:8px 10px; border-radius:10px;
+  font-weight:900; background:rgba(0,0,0,.06);
+}
+[data-theme="cocoa"] .themeBtns button{background:rgba(255,255,255,.10)}
+.themeBtns button[aria-pressed="true"]{
+  background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+  color:#111;
+}
+
+/* Background: aura ribbons + sparkle (NOT grid) */
+.bg{
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+}
+.bg:before{
+  content:"";
+  position:absolute; inset:-20%;
+  background:
+    radial-gradient(900px 520px at 18% 30%, color-mix(in oklab, var(--a) 55%, transparent) 0, transparent 62%),
+    radial-gradient(850px 520px at 82% 25%, color-mix(in oklab, var(--b) 50%, transparent) 0, transparent 60%),
+    radial-gradient(900px 560px at 60% 82%, color-mix(in oklab, var(--c) 50%, transparent) 0, transparent 62%);
+  filter: blur(10px);
+  opacity:.95;
+}
+.bg:after{
+  content:"";
+  position:absolute; inset:0;
+  background-image: radial-gradient(rgba(0,0,0,.14) 1px, transparent 1px);
+  background-size: 38px 38px;
+  opacity: .10;
+}
+[data-theme="cocoa"] .bg:after{
+  background-image: radial-gradient(rgba(246,239,231,.22) 1px, transparent 1px);
+  opacity:.12;
+}
+
+/* layout */
+.page{
+  position:relative;
+  z-index:1;
+  min-height:100svh;
+  padding:120px 18px 76px;
+}
+.hero{
+  max-width:1240px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 22px;
+  align-items:stretch;
+}
+.copy{padding: 6px}
+.kicker{
+  display:inline-flex; gap:10px; align-items:center;
+  letter-spacing:.16em; text-transform:uppercase;
+  font-size:12px; color: var(--muted);
+}
+.kdot{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--a),var(--b),var(--c))}
+h1{
+  margin:14px 0 10px;
+  font-size: clamp(34px, 4.8vw, 62px);
+  line-height:1.04;
+  letter-spacing:-.03em;
+}
+.lead{
+  margin:0;
+  color: var(--muted);
+  line-height:1.8;
+  font-size:16px;
+  max-width: 70ch;
+}
+
+/* quick stats / proof */
+.proof{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius: 18px;
+  background: var(--glass);
+  padding: 12px;
+  backdrop-filter: blur(10px);
+}
+.card b{
+  display:block;
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.card span{
+  display:block;
+  margin-top:8px;
+  color: var(--muted);
+  line-height:1.6;
+  font-size:13px;
+}
+
+/* offer chips */
+.chips{
+  margin-top:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.chip{
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.35);
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.06em;
+}
+[data-theme="cocoa"] .chip{background: rgba(255,255,255,.08)}
+
+/* CTA */
+.actions{
+  margin-top:16px;
+  display:flex; flex-wrap:wrap; gap:10px;
+}
+.actions a{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.32);
+  font-weight:900;
+}
+[data-theme="cocoa"] .actions a{background: rgba(255,255,255,.08);}
+.actions a.primary{
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+  color:#111;
+}
+
+/* Kristina image */
+.portrait{
+  position:relative;
+  min-height: 560px;
+  border-radius: 38px;
+  overflow:hidden;
+  background: url("assets/kristina.jpg") center/cover no-repeat;
+  box-shadow: 0 34px 90px rgba(0,0,0,.18);
+}
+.portrait:before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(700px 420px at 30% 20%, rgba(255,255,255,.18), transparent 58%),
+    radial-gradient(800px 520px at 70% 80%, rgba(0,0,0,.12), transparent 60%);
+  mix-blend-mode: overlay;
+}
+.badge{
+  position:absolute;
+  left:16px; top:16px;
+  padding:10px 12px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+.badge b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.badge span{display:block;margin-top:6px;color:var(--muted);font-size:13px;line-height:1.5}
+
+/* second image strip for depth */
+.strip{
+  margin-top:16px;
+  height: 140px;
+  border-radius: 22px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.10), transparent 45%, rgba(0,0,0,.10)),
+    url("assets/path.jpg") center/cover no-repeat;
+}
+
+@media (max-width: 980px){
+  .hero{grid-template-columns:1fr}
+  .portrait{min-height:420px}
+  .proof{grid-template-columns:1fr}
+}
 </style>
 </head>
 
-<body data-theme="linen">
-<div class="top">
-  <div class="pill"><div data-layout-nav></div></div>
-  <div class="pill">
-    <select onchange="document.body.dataset.theme=this.value">
-      <option value="linen">Linen</option>
-      <option value="clay">Clay</option>
-      <option value="sage">Sage</option>
-      <option value="stone">Stone</option>
-      <option value="mist">Mist</option>
-    </select>
-  </div>
-</div>
+<body data-theme="apricot">
+  <div class="top">
+    <div class="pill"><div data-layout-nav></div></div>
 
-<section class="hero">
-  <div class="photo"></div>
-
-  <div class="curves" aria-hidden="true">
-    <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
-      <path d="M0,420 C260,360 420,480 620,420 820,360 1000,440 1200,400"
-        fill="none" stroke="var(--accent)" stroke-width="1.5" opacity=".35"/>
-    </svg>
+    <div class="pill">
+      <label>Theme</label>
+      <div class="themeBtns" id="themeBtns18">
+        <button type="button" data-theme="apricot" aria-pressed="true">Apricot</button>
+        <button type="button" data-theme="latte" aria-pressed="false">Latte</button>
+        <button type="button" data-theme="roseclay" aria-pressed="false">Rose</button>
+        <button type="button" data-theme="sage" aria-pressed="false">Sage</button>
+        <button type="button" data-theme="cocoa" aria-pressed="false">Cocoa</button>
+      </div>
+    </div>
   </div>
 
-  <div class="content">
-    <h1>Saruna sākas ar klātbūtni.</h1>
-    <p>
-      Personāla vadība un koučings,
-      kas balstīts mierā, skaidrībā
-      un cieņpilnā attiecībā ar cilvēku.
-    </p>
-  </div>
-</section>
+  <div class="bg" aria-hidden="true"></div>
 
-<script src="app.js"></script>
+  <main class="page">
+    <section class="hero">
+      <div class="copy">
+        <div class="kicker"><span class="kdot"></span> Personālvadība • Koučings • Vadītāju atbalsts</div>
+        <h1>HR skaidrība + koučings, kas pārvēršas rīcībā.</h1>
+        <p class="lead">
+          Kristīna strādā ar vadītājiem un komandām, kur vajag nevis “iedvesmu”, bet praktisku sistēmu:
+          sarunu rāmjus, attīstības plānus, kultūras principus un mierīgu izpildi ikdienā.
+        </p>
+
+        <div class="chips" aria-label="Kompetenču virzieni">
+          <div class="chip">Vadītāju sarunas</div>
+          <div class="chip">Pārmaiņu vadība</div>
+          <div class="chip">Darbinieku attīstība</div>
+          <div class="chip">Atlase & onbords</div>
+          <div class="chip">Kultūra & iesaiste</div>
+        </div>
+
+        <div class="proof">
+          <div class="card">
+            <b>Prakse</b>
+            <span>Daudzu gadu HR pieredze: struktūras, procesi, cilvēku sistēmas.</span>
+          </div>
+          <div class="card">
+            <b>Koučings</b>
+            <span>Sertificēta pieeja (projekta palaišanas brīdī) – profesionāls ietvars izaugsmei.</span>
+          </div>
+          <div class="card">
+            <b>Rezultāts</b>
+            <span>Skairas sarunas, noturīgi ieradumi, komandas sadarbība bez liekas spriedzes.</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="primary" href="#">Pieteikt konsultāciju</a>
+          <a href="#">Pakalpojumi</a>
+          <a href="#">CV & pieredze</a>
+        </div>
+
+        <div class="strip" aria-hidden="true"></div>
+      </div>
+
+      <div class="portrait" aria-label="Kristīnas portrets">
+        <div class="badge">
+          <b>Kristīna Kaņepe</b>
+          <span>HR profesionāle & koučs • skaidrība, kultūra, izaugsme</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const root=document.body, wrap=document.getElementById('themeBtns18'), key='layout18_theme';
+      const saved=localStorage.getItem(key);
+      const set=(t)=>{
+        root.setAttribute('data-theme', t);
+        localStorage.setItem(key, t);
+        [...wrap.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', b.dataset.theme===t ? 'true':'false'));
+      };
+      if(saved) set(saved);
+      wrap.addEventListener('click',(e)=>{
+        const btn=e.target.closest('button[data-theme]');
+        if(!btn) return;
+        set(btn.dataset.theme);
+      });
+    })();
+  </script>
+
+  <script src="app.js"></script>
 </body>
 </html>
