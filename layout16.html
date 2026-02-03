@@ -1,1 +1,125 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 16 — Editorial Brutal</title>
 
+<style>
+/* ===== Themes (local only) ===== */
+:root{
+  --bg:#ffffff;
+  --ink:#111;
+  --muted:#6b6b6b;
+  --accent:#c0672f;
+}
+[data-theme="white"]{--bg:#ffffff;--ink:#111;--accent:#c0672f}
+[data-theme="ink"]{--bg:#0f0f10;--ink:#f3efe8;--muted:rgba(243,239,232,.7);--accent:#d9a24c}
+[data-theme="paper"]{--bg:#f7f2ea;--ink:#1c1612;--accent:#b77a3a}
+[data-theme="gallery"]{--bg:#f1f1f1;--ink:#1a1a1a;--accent:#888}
+[data-theme="night"]{--bg:#0b0b0c;--ink:#f6efe7;--accent:#c05b78}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Times New Roman", Georgia, serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between;z-index:10
+}
+.pill{
+  background:rgba(255,255,255,.7);
+  padding:10px 12px;
+}
+select{border:0;background:transparent;font-weight:700}
+
+main{
+  min-height:100vh;
+  padding:120px 18px 80px;
+  display:grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap:40px;
+}
+
+.big{
+  font-size:clamp(56px,7vw,120px);
+  line-height:.95;
+  letter-spacing:-.05em;
+}
+.cut{
+  margin-top:20px;
+  max-width:420px;
+  font-size:18px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.collage{
+  position:relative;
+  min-height:520px;
+}
+.imgA{
+  position:absolute;
+  inset:0 20% 20% 0;
+  background:url("assets/kristina.jpg") center/cover;
+}
+.imgB{
+  position:absolute;
+  right:0;bottom:0;
+  width:45%;height:45%;
+  background:url("assets/zen.jpg") center/cover;
+}
+.imgC{
+  position:absolute;
+  left:-20px;bottom:40px;
+  width:40%;height:30%;
+  background:url("assets/path.jpg") center/cover;
+  mix-blend-mode:multiply;
+  opacity:.9;
+}
+
+@media(max-width:900px){
+  main{grid-template-columns:1fr}
+  .collage{min-height:420px}
+}
+</style>
+</head>
+
+<body data-theme="white">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="white">Editorial</option>
+      <option value="ink">Ink</option>
+      <option value="paper">Paper</option>
+      <option value="gallery">Gallery</option>
+      <option value="night">Night Luxe</option>
+    </select>
+  </div>
+</div>
+
+<main>
+  <section>
+    <div class="big">NEERTI.<br>KLUSI.<br>DĀRGI.</div>
+    <p class="cut">
+      Šis nav dizains visiem.
+      Tā ir pozīcija, klātbūtne un profesionāls miers.
+      Koučings bez izskaistināšanas.
+    </p>
+  </section>
+
+  <section class="collage">
+    <div class="imgA"></div>
+    <div class="imgB"></div>
+    <div class="imgC"></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
