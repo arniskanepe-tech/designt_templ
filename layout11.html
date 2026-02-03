@@ -1,1 +1,115 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 11 — Swiss Grid</title>
 
+<style>
+:root{
+  --bg:#f7f7f5;
+  --ink:#111;
+  --muted:#666;
+  --accent:#9a7b4f;
+  --grid:rgba(0,0,0,.08);
+}
+[data-theme="ivory"]{--bg:#f7f7f5;--ink:#111;--accent:#9a7b4f}
+[data-theme="slate"]{--bg:#f2f3f4;--ink:#141414;--accent:#4f6b7a}
+[data-theme="olive"]{--bg:#f1f2ef;--ink:#1b1f18;--accent:#6a7a55}
+[data-theme="sand"]{--bg:#f8f4ee;--ink:#1d1a17;--accent:#b28a5a}
+[data-theme="ink"]{--bg:#0f0f10;--ink:#f2f2f2;--grid:rgba(255,255,255,.12)}
+
+body{
+  margin:0;
+  font-family: system-ui;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.grid-bg{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+
+.page{
+  position:relative;
+  padding:120px 40px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:80px;
+}
+
+h1{
+  font-size:48px;
+  line-height:1.1;
+}
+p{
+  max-width:460px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.coords{
+  display:flex;
+  gap:18px;
+  margin-top:24px;
+}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);
+}
+
+.image{
+  background:url("assets/kristina.jpg") center/cover;
+  border-radius:20px;
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between
+}
+.pill{background:#fff;padding:10px 12px;border-radius:12px}
+
+select{border:0;background:transparent;font-weight:800}
+</style>
+</head>
+
+<body data-theme="ivory">
+<div class="grid-bg"></div>
+
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="ivory">Ivory</option>
+      <option value="slate">Slate</option>
+      <option value="olive">Olive</option>
+      <option value="sand">Sand</option>
+      <option value="ink">Ink</option>
+    </select>
+  </div>
+</div>
+
+<main class="page">
+  <section>
+    <h1>Skaidra domāšana rada stabilu izaugsmi.</h1>
+    <p>
+      Koučings kā struktūra — nevis emocija.
+      Šeit katrs solis balstās sistēmā,
+      kur cilvēks saprot savu pozīciju un nākamo kustību.
+    </p>
+    <div class="coords">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </section>
+
+  <section class="image"></section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
