@@ -1,2 +1,181 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Layout 4</title></head>
-<body><div data-layout-nav></div><h1>Layout 4</h1><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Layout 4 — Flow</title>
+
+<style>
+:root{
+  --bg:#f7f3ef;
+  --ink:#2b2623;
+  --muted:#6b5f58;
+  --accent:#c07a4a;
+  --line:rgba(192,122,74,.22);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+/* NAV */
+[data-layout-nav]{
+  position:fixed;
+  top:14px; right:14px;
+  z-index:50;
+}
+[data-layout-nav] select{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  background:#fff;
+  font-weight:600;
+}
+
+/* FLOW BACKGROUND */
+.flow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+.flow svg{
+  width:100%;
+  height:100%;
+}
+.flow path{
+  fill:none;
+  stroke:var(--line);
+  stroke-width:1.2;
+}
+
+/* CONTENT */
+.page{
+  position:relative;
+  z-index:1;
+  max-width:1200px;
+  margin:0 auto;
+  padding:120px 20px 80px;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:48px;
+  align-items:center;
+}
+
+.text h1{
+  font-size:clamp(34px,4vw,56px);
+  line-height:1.05;
+  margin:0;
+}
+.text p{
+  margin-top:18px;
+  max-width:60ch;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+}
+
+.points{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.point{
+  padding-left:14px;
+  border-left:3px solid var(--accent);
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* IMAGES */
+.visual{
+  position:relative;
+}
+.img1{
+  width:100%;
+  height:380px;
+  background:url("assets/kristina.jpg") center/cover no-repeat;
+  border-radius:24px;
+}
+.img2{
+  position:absolute;
+  bottom:-60px;
+  right:-40px;
+  width:260px;
+  height:200px;
+  background:url("assets/path.jpg") center/cover no-repeat;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
+
+/* CTA */
+.cta{
+  margin-top:42px;
+}
+.cta a{
+  display:inline-block;
+  padding:14px 22px;
+  border-radius:14px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:600;
+  text-decoration:none;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .img2{right:0}
+}
+</style>
+</head>
+
+<body>
+<div data-layout-nav></div>
+
+<div class="flow">
+<svg viewBox="0 0 1000 600" preserveAspectRatio="none">
+  <path d="M0,120 C200,60 400,200 600,140 800,80 1000,160 1200,120"/>
+  <path d="M0,260 C220,300 420,180 620,240 820,300 1000,220 1200,260"/>
+  <path d="M0,420 C200,360 400,520 600,440 800,360 1000,460 1200,420"/>
+</svg>
+</div>
+
+<main class="page">
+  <section class="hero">
+    <div class="text">
+      <h1>Izaugsme sākas brīdī,<br>kad parādās skaidrība.</h1>
+      <p>
+        Personāla vadība un koučings nav atsevišķas disciplīnas — tās ir viena sistēma.
+        Es palīdzu organizācijām un cilvēkiem saprast, <b>kur viņi ir, uz kurieni iet
+        un kā tur nokļūt bez liekas spriedzes</b>.
+      </p>
+
+      <div class="points">
+        <div class="point">Skaidra HR struktūra bez birokrātijas</div>
+        <div class="point">Vadītāju domāšanas un rīcības maiņa</div>
+        <div class="point">Attīstības sarunas, kas patiešām strādā</div>
+        <div class="point">Ilgtspējīgas pārmaiņas, nevis “projekts uz papīra”</div>
+      </div>
+
+      <div class="cta">
+        <a href="#">Pieteikt sarunu</a>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="img1"></div>
+      <div class="img2"></div>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
