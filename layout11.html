@@ -17,8 +17,13 @@
 [data-theme="slate"]{--bg:#f2f3f4;--ink:#141414;--accent:#4f6b7a}
 [data-theme="olive"]{--bg:#f1f2ef;--ink:#1b1f18;--accent:#6a7a55}
 [data-theme="sand"]{--bg:#f8f4ee;--ink:#1d1a17;--accent:#b28a5a}
-[data-theme="ink"]{--bg:#0f0f10;--ink:#f2f2f2;--grid:rgba(255,255,255,.12)}
+[data-theme="ink"]{
+  --bg:#2a2724;         /* ne melns */
+  --ink:#f2f2f2;
+  --grid:rgba(255,255,255,.12)
+}
 
+*{box-sizing:border-box}
 body{
   margin:0;
   font-family: system-ui;
@@ -26,6 +31,7 @@ body{
   color:var(--ink);
 }
 
+/* background grid (vizuāls, NE klikšķināms) */
 .grid-bg{
   position:fixed;
   inset:0;
@@ -33,10 +39,14 @@ body{
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size:48px 48px;
+  pointer-events:none;
+  z-index:0;
 }
 
+/* layout */
 .page{
   position:relative;
+  z-index:1;
   padding:120px 40px;
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -68,13 +78,59 @@ p{
   border-radius:20px;
 }
 
+/* top bar */
 .top{
-  position:fixed;top:14px;left:14px;right:14px;
-  display:flex;justify-content:space-between
+  position:fixed;
+  top:14px;left:14px;right:14px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  z-index:9999;
 }
-.pill{background:#fff;padding:10px 12px;border-radius:12px}
+.pill{
+  background:#fff;
+  padding:10px 12px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-select{border:0;background:transparent;font-weight:800}
+/* IMPORTANT: layout nav must always be clickable */
+[data-layout-nav]{
+  position:relative;
+  z-index:99999;
+}
+[data-layout-nav] select{
+  border:0;
+  background:transparent;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* theme buttons instead of select */
+.themeBtns{
+  display:flex;
+  gap:6px;
+}
+.themeBtns button{
+  border:0;
+  padding:8px 10px;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
+  background:rgba(0,0,0,.06);
+}
+.themeBtns button[aria-pressed="true"]{
+  background:var(--accent);
+  color:#fff;
+}
+
+/* mobile */
+@media(max-width:980px){
+  .page{grid-template-columns:1fr; padding:120px 18px}
+  .image{min-height:320px}
+}
 </style>
 </head>
 
@@ -83,14 +139,15 @@ select{border:0;background:transparent;font-weight:800}
 
 <div class="top">
   <div class="pill"><div data-layout-nav></div></div>
+
   <div class="pill">
-    <select onchange="document.body.dataset.theme=this.value">
-      <option value="ivory">Ivory</option>
-      <option value="slate">Slate</option>
-      <option value="olive">Olive</option>
-      <option value="sand">Sand</option>
-      <option value="ink">Ink</option>
-    </select>
+    <div class="themeBtns" id="themeBtns11" aria-label="Theme">
+      <button type="button" data-theme="ivory" aria-pressed="true">Ivory</button>
+      <button type="button" data-theme="slate">Slate</button>
+      <button type="button" data-theme="olive">Olive</button>
+      <button type="button" data-theme="sand">Sand</button>
+      <button type="button" data-theme="ink">Ink</button>
+    </div>
   </div>
 </div>
 
@@ -109,6 +166,33 @@ select{border:0;background:transparent;font-weight:800}
 
   <section class="image"></section>
 </main>
+
+<script>
+(function(){
+  const root = document.body;
+  const wrap = document.getElementById('themeBtns11');
+  const key = 'layout11_theme';
+
+  const saved = localStorage.getItem(key);
+  if(saved){
+    root.setAttribute('data-theme', saved);
+    [...wrap.children].forEach(b=>{
+      b.setAttribute('aria-pressed', b.dataset.theme === saved);
+    });
+  }
+
+  wrap.addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-theme]');
+    if(!btn) return;
+    const t = btn.dataset.theme;
+    root.setAttribute('data-theme', t);
+    localStorage.setItem(key, t);
+    [...wrap.children].forEach(b=>{
+      b.setAttribute('aria-pressed', b === btn);
+    });
+  });
+})();
+</script>
 
 <script src="app.js"></script>
 </body>
