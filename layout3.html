@@ -1,2 +1,237 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Layout 3</title></head>
-<body><div data-layout-nav></div><h1>Layout 3</h1><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Layout 3 — Sharp Grid</title>
+
+  <style>
+    :root{
+      --paper:#f4efe8;
+      --ink:#171311;
+      --muted:#5c4f47;
+      --accent:#b05b2a;
+      --accent2:#d6a07e;
+      --line: rgba(23,19,17,.22);
+      --grid: rgba(23,19,17,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#101010;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* Layout switch (no app.js) — “industrial bar” (citādi nekā 1/2) */
+    [data-layout-nav]{
+      background: var(--paper);
+      border-bottom: 3px solid var(--line);
+      padding: 10px 12px;
+    }
+    [data-layout-nav] .navButtons{display:none !important;}
+    [data-layout-nav] .navLabel{display:none !important;}
+    [data-layout-nav] .navRow{display:block !important;}
+    [data-layout-nav] select{
+      width:100%;
+      padding: 12px 12px;
+      border: 2px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      outline:none;
+      color: var(--ink);
+    }
+
+    .page{
+      background: var(--paper);
+      min-height: calc(100svh - 56px);
+      position:relative;
+      overflow:hidden;
+      color: var(--ink);
+    }
+
+    /* Izaugsmes grafika: režģis + diagonāles (kantaini, tehniski) */
+    .page:before{
+      content:"";
+      position:absolute; inset:-160px;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px) 0 0/ 44px 44px,
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/ 44px 44px;
+      transform: rotate(7deg);
+      opacity:.7;
+      pointer-events:none;
+    }
+    .page:after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(135deg, rgba(176,91,42,.18) 0%, transparent 38%),
+        linear-gradient(315deg, rgba(214,160,126,.18) 0%, transparent 42%);
+      pointer-events:none;
+    }
+
+    .wrap{max-width:1200px;margin:0 auto;padding:18px 18px 72px;position:relative}
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .box{
+      border: 3px solid var(--line);
+      background:#fff;
+      padding: 16px;
+    }
+
+    .h1{
+      font-weight:900;
+      font-size: 22px;
+      letter-spacing:-.02em;
+      text-transform:uppercase;
+      line-height:1.2;
+    }
+    .lead{
+      margin-top:10px;
+      color: var(--muted);
+      line-height:1.7;
+      font-size: 13px;
+    }
+
+    .img{
+      border: 3px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(23,19,17,.22), rgba(23,19,17,.06)),
+        url("assets/stones.jpg") center/cover no-repeat;
+      min-height: 240px;
+    }
+
+    .mods{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .mod{
+      border:3px solid var(--line);
+      background:#fff;
+      padding: 14px;
+      min-height: 150px;
+    }
+    .mod b{
+      display:block;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size: 12px;
+    }
+    .mod p{
+      margin:10px 0 0;
+      color: var(--muted);
+      line-height:1.6;
+      font-size: 12px;
+    }
+
+    .rows{
+      margin-top:14px;
+      border:3px solid var(--line);
+      background:#fff;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap:12px;
+      padding: 14px;
+      border-top:3px solid var(--line);
+      align-items:start;
+    }
+    .row:first-child{border-top:0}
+    .k{
+      font-weight:900;
+      color: var(--accent);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .v{
+      color: var(--muted);
+      line-height:1.7;
+      font-size:12px;
+    }
+
+    .cta{
+      margin-top:14px;
+      display:inline-flex;
+      padding: 12px 14px;
+      border:3px solid var(--line);
+      background: linear-gradient(180deg, rgba(214,160,126,.30), rgba(214,160,126,.08));
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+
+    @media (max-width: 980px){
+      .grid2{grid-template-columns:1fr}
+      .mods{grid-template-columns:1fr}
+      .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div data-layout-nav></div>
+
+  <main class="page">
+    <div class="wrap">
+      <section class="grid2">
+        <div class="box">
+          <div class="h1">HR sistēma + koučings, kas dod skaidrību vadītājiem</div>
+          <div class="lead">
+            Pieredze pilnā darbinieka dzīves ciklā: atlase, onbordings, attīstības pārrunas, iesaiste un pārmaiņu vadība.
+            Fokusā — vienkārši procesi, kurus tiešām ievēro, un vadītāju prasmes, kas notur izmaiņas.
+            (Lapas palaišanas brīdī koučinga sertifikācija jau ir iegūta.)
+          </div>
+          <a class="cta" href="#">Pieteikt pirmo sarunu</a>
+        </div>
+
+        <div class="img" aria-label="Akmeņi pie strauta"></div>
+      </section>
+
+      <section class="mods">
+        <div class="mod">
+          <b>ATLASE</b>
+          <p>Precīzs profils + strukturētas intervijas + kandidātu pieredze, kas ceļ darba devēja tēlu.</p>
+        </div>
+        <div class="mod">
+          <b>ONBORDINGS</b>
+          <p>30/60/90 dienu sistēma, kas samazina kļūdas un paātrina produktivitāti.</p>
+        </div>
+        <div class="mod">
+          <b>ATTĪSTĪBA</b>
+          <p>Vadītāju sarunas, atgriezeniskā saite, mācību/attīstības projekti, iesaiste un labbūtība.</p>
+        </div>
+      </section>
+
+      <section class="rows">
+        <div class="row">
+          <div class="k">01 DIAGNOZE</div>
+          <div class="v">Ātri atrodam “kur bremzē”: process, komunikācija, lomas vai vadības paradumi.</div>
+        </div>
+        <div class="row">
+          <div class="k">02 DIZAINS</div>
+          <div class="v">Uzbūvējam skaidru sistēmu — instrukcijas, ritms, atbildības un vienkārša ieviešana.</div>
+        </div>
+        <div class="row">
+          <div class="k">03 IEVIEŠANA</div>
+          <div class="v">Ieviešana + koučings vadītājiem, lai jaunā kārtība noturas un dod rezultātu.</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
