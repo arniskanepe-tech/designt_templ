@@ -8,17 +8,19 @@
 <style>
 :root{--bg:#f9f6f2;--ink:#1a1714;--accent:#b68b5a}
 [data-theme="ivory"]{--bg:#f9f6f2;--ink:#1a1714;--accent:#b68b5a}
-[data-theme="charcoal"]{--bg:#0f0f10;--ink:#f5f2ec;--accent:#d8b36a}
+[data-theme="charcoal"]{--bg:#2a2623;--ink:#f5f2ec;--accent:#d8b36a} /* nav melns */
 [data-theme="clay"]{--bg:#f5eee8;--ink:#241914;--accent:#c46b3a}
 [data-theme="forest"]{--bg:#eef2ee;--ink:#192018;--accent:#4f6b52}
-[data-theme="gold"]{--bg:#0d0b09;--ink:#f6f1e7;--accent:#e0b44c}
+[data-theme="gold"]{--bg:#3a332b;--ink:#f6f1e7;--accent:#e0b44c}     /* nav melns */
 
+*{box-sizing:border-box}
 body{
   margin:0;
   font-family: system-ui;
   background:var(--bg);
   color:var(--ink);
 }
+
 main{
   min-height:100vh;
   display:grid;
@@ -37,39 +39,90 @@ main{
 .center{
   padding:120px 40px;
 }
-.center h1{font-size:48px}
-.center p{max-width:420px;line-height:1.7}
+.center h1{font-size:48px; margin:0 0 12px}
+.center p{max-width:420px;line-height:1.7; margin:0}
 
 .image{
   background:url("assets/kristina.jpg") center/cover;
 }
 
+/* top bar */
 .top{
-  position:fixed;top:14px;left:14px;right:14px;
-  display:flex;justify-content:space-between
+  position:fixed;
+  top:14px;left:14px;right:14px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  z-index:9999; /* lai nekas nepārklāj */
 }
-.pill{background:#fff;padding:10px 12px;border-radius:12px}
+.pill{
+  background:#fff;
+  padding:10px 12px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-select{border:0;background:transparent;font-weight:800}
+/* IMPORTANT: atļaujam app.js navigācijas selectam būt klikšķināmam */
+[data-layout-nav]{
+  position:relative;
+  z-index:99999;
+}
+[data-layout-nav] select{
+  border:0;
+  background:transparent;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* theme buttons (nevis select) */
+.themeBtns{
+  display:flex;
+  gap:6px;
+}
+.themeBtns button{
+  border:0;
+  padding:8px 10px;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
+  background:rgba(0,0,0,.06);
+}
+.themeBtns button:hover{filter:brightness(.98)}
+.themeBtns button:active{transform:translateY(1px)}
+.themeBtns button[aria-pressed="true"]{
+  background:linear-gradient(90deg, var(--accent), rgba(0,0,0,.06));
+}
+
+/* mobile */
+@media(max-width:980px){
+  main{grid-template-columns:1fr}
+  .vert{writing-mode:horizontal-tb; transform:none; padding:18px; font-size:44px}
+  .center{padding:18px}
+  .image{min-height:320px}
+}
 </style>
 </head>
 
 <body data-theme="ivory">
 <div class="top">
   <div class="pill"><div data-layout-nav></div></div>
+
   <div class="pill">
-    <select onchange="document.body.dataset.theme=this.value">
-      <option value="ivory">Ivory</option>
-      <option value="charcoal">Charcoal</option>
-      <option value="clay">Clay</option>
-      <option value="forest">Forest</option>
-      <option value="gold">Gold</option>
-    </select>
+    <div class="themeBtns" id="themeBtns9" aria-label="Theme">
+      <button type="button" data-theme="ivory" aria-pressed="true">Ivory</button>
+      <button type="button" data-theme="charcoal" aria-pressed="false">Charcoal</button>
+      <button type="button" data-theme="clay" aria-pressed="false">Clay</button>
+      <button type="button" data-theme="forest" aria-pressed="false">Forest</button>
+      <button type="button" data-theme="gold" aria-pressed="false">Gold</button>
+    </div>
   </div>
 </div>
 
 <main>
   <div class="vert">COACHING</div>
+
   <div class="center">
     <h1>Skaidrība rada autoritāti.</h1>
     <p>
@@ -77,8 +130,37 @@ select{border:0;background:transparent;font-weight:800}
       nevis motivāciju, bet noturīgu rezultātu.
     </p>
   </div>
+
   <div class="image"></div>
 </main>
+
+<script>
+  (function(){
+    const root = document.body;
+    const wrap = document.getElementById('themeBtns9');
+    const key = 'layout9_theme';
+
+    // restore
+    const saved = localStorage.getItem(key);
+    if(saved){
+      root.setAttribute('data-theme', saved);
+      [...wrap.querySelectorAll('button')].forEach(b=>{
+        b.setAttribute('aria-pressed', b.dataset.theme === saved ? 'true' : 'false');
+      });
+    }
+
+    wrap.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-theme]');
+      if(!btn) return;
+      const t = btn.dataset.theme;
+      root.setAttribute('data-theme', t);
+      localStorage.setItem(key, t);
+      [...wrap.querySelectorAll('button')].forEach(b=>{
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+    });
+  })();
+</script>
 
 <script src="app.js"></script>
 </body>
