@@ -1,2 +1,85 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Layout 9</title></head>
-<body><div data-layout-nav></div><h1>Layout 9</h1><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout 9 — Vertical Power</title>
+
+<style>
+:root{--bg:#f9f6f2;--ink:#1a1714;--accent:#b68b5a}
+[data-theme="ivory"]{--bg:#f9f6f2;--ink:#1a1714;--accent:#b68b5a}
+[data-theme="charcoal"]{--bg:#0f0f10;--ink:#f5f2ec;--accent:#d8b36a}
+[data-theme="clay"]{--bg:#f5eee8;--ink:#241914;--accent:#c46b3a}
+[data-theme="forest"]{--bg:#eef2ee;--ink:#192018;--accent:#4f6b52}
+[data-theme="gold"]{--bg:#0d0b09;--ink:#f6f1e7;--accent:#e0b44c}
+
+body{
+  margin:0;
+  font-family: system-ui;
+  background:var(--bg);
+  color:var(--ink);
+}
+main{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns: 120px 1fr 1fr;
+}
+
+.vert{
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-size:72px;
+  font-weight:900;
+  letter-spacing:.2em;
+  padding:40px;
+}
+
+.center{
+  padding:120px 40px;
+}
+.center h1{font-size:48px}
+.center p{max-width:420px;line-height:1.7}
+
+.image{
+  background:url("assets/kristina.jpg") center/cover;
+}
+
+.top{
+  position:fixed;top:14px;left:14px;right:14px;
+  display:flex;justify-content:space-between
+}
+.pill{background:#fff;padding:10px 12px;border-radius:12px}
+
+select{border:0;background:transparent;font-weight:800}
+</style>
+</head>
+
+<body data-theme="ivory">
+<div class="top">
+  <div class="pill"><div data-layout-nav></div></div>
+  <div class="pill">
+    <select onchange="document.body.dataset.theme=this.value">
+      <option value="ivory">Ivory</option>
+      <option value="charcoal">Charcoal</option>
+      <option value="clay">Clay</option>
+      <option value="forest">Forest</option>
+      <option value="gold">Gold</option>
+    </select>
+  </div>
+</div>
+
+<main>
+  <div class="vert">COACHING</div>
+  <div class="center">
+    <h1>Skaidrība rada autoritāti.</h1>
+    <p>
+      Darbs ar vadītājiem, kuri vēlas
+      nevis motivāciju, bet noturīgu rezultātu.
+    </p>
+  </div>
+  <div class="image"></div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
